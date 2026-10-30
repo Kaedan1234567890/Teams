@@ -9,3 +9,7 @@ Changes:
 - GitHub Actions build workflow with JDK 25
 
 This build is NOT compiled or verified. It may require additional Java API compatibility patches, and source-level checks are not a substitute for in-game testing. Run GitHub Actions and share the first actual compilation error if any. Install the non-sources JAR from build/libs only after build passes; avoid keeping other Allied JARs concurrently.
+
+
+## Alpha 2 (configuration test)
+Removed unnecessary Fabric API client data-generation configuration from server-only build. Changed GitHub build output to plain, non-stacktrace for easier identification of the first Gradle error. Not yet compiled or in-game verified.
