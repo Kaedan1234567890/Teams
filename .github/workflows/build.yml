@@ -1,4 +1,4 @@
-name: Build Allied 26.3 Port Alpha 2
+name: Build Allied 26.3 Port Alpha 5
 on:
   workflow_dispatch:
   push:
@@ -19,8 +19,13 @@ jobs:
         run: chmod +x gradlew
       - name: Build
         run: ./gradlew clean build --console=plain --warning-mode=all
+      - name: Confirm packaged Allied source classes
+        run: |
+          test -f src/main/java/com/bba/allied/commands/teamCommands.java
+          test -f src/main/java/com/bba/allied/commands/adminCommands.java
+          ls -lh build/libs/*.jar
       - uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: allied-26.3-port-jars
+          name: chillzone-allied-26.3-alpha5-jars
           path: build/libs/*.jar

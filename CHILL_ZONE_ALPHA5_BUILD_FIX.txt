@@ -1,0 +1,1 @@
+Alpha 5: Correct Gradle wrapper to published 9.8.2 distribution (9.8.0/9.8.1/9.8.2 available, not 9.8). Original Allied gameplay source unchanged from Alpha 4. GitHub Actions title, artifact name and mod version aligned. This fixes the 404 shown in the log; full compilation and in-game behavior are not yet verified.
