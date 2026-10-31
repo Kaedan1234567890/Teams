@@ -49,14 +49,18 @@ public class teamUtils {
 
     public static void register() {
         ServerMessageEvents.ALLOW_CHAT_MESSAGE.register((signedMessage, player, params) -> {
+            // Public chat must remain with Styled Chat (or the server's active chat formatter).
+            // Reformatting it here would duplicate the scoreboard/team tag and override
+            // custom username colours. Private team chat is still handled below.
+            UUID uuid = player.getUUID();
+            if (!teamChatManager.isEnabled(uuid)) return true;
             String rawText = signedMessage.decoratedContent().getString();
             Component formatted = formatTeamChat(player, rawText);
 
-            UUID uuid = player.getUUID();
-
             String teamName = teamChatManager.isEnabled(uuid) ? datManager.get().getTeam(uuid) : null;
-            if (teamChatManager.isEnabled(uuid) && teamName == null) {
+            if (teamName == null) {
                 teamChatManager.disable(uuid);
+                return true; // Team was removed; do not intercept public chat.
             }
 
             if (teamName != null) {
@@ -146,7 +150,7 @@ public class teamUtils {
         PlayerTeam scoreboardTeam = player.getTeam();
 
         Component prefix = Component.empty();
-        Component playerName = player.getDisplayName().copy(); // Preserve the name styling provided by other systems.
+        Component playerName = player.getName().copy(); // Prevent the scoreboard team prefix from being repeated in private chat.
 
         if (scoreboardTeam != null) {
             prefix = scoreboardTeam.getPlayerPrefix();
