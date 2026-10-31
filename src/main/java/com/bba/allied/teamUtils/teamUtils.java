@@ -146,7 +146,7 @@ public class teamUtils {
         PlayerTeam scoreboardTeam = player.getTeam();
 
         Component prefix = Component.empty();
-        Component playerName = Component.literal(player.getName().getString()).withStyle(ChatFormatting.WHITE);
+        Component playerName = player.getDisplayName().copy(); // Preserve the name styling provided by other systems.
 
         if (scoreboardTeam != null) {
             prefix = scoreboardTeam.getPlayerPrefix();

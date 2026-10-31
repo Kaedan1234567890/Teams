@@ -34,6 +34,53 @@ public class commands {
                 Commands.literal("teams")
                         .requires(CommandSourceStack::isPlayer)
 
+                        // Team owners can update only their tag colour; this does not grant admin privileges.
+                        .then(Commands.literal("color")
+                                .then(Commands.argument("color", StringArgumentType.word())
+                                        .suggests((ctx, builder) -> {
+                                            for (TeamColor color : TeamColor.values()) {
+                                                builder.suggest(color.getSerializedName());
+                                            }
+                                            return builder.buildFuture();
+                                        })
+                                        .executes(context -> {
+                                            ServerPlayer player = context.getSource().getPlayerOrException();
+                                            String color = StringArgumentType.getString(context, "color");
+                                            try {
+                                                datManager.get().executeSet(player, "color", color);
+                                            } catch (IOException ex) {
+                                                context.getSource().sendFailure(Component.literal("Could not save the team colour."));
+                                                return 0;
+                                            }
+                                            teamUtils.rebuildTeams(context.getSource().getServer());
+                                            context.getSource().sendSuccess(() -> Component.literal("Team tag colour updated to " + color), false);
+                                            return 1;
+                                        })))
+
+                        .then(Commands.literal("color")
+                                .then(Commands.literal("tag")
+                                .then(Commands.argument("color", StringArgumentType.word())
+                                        .suggests((ctx, builder) -> {
+                                            for (TeamColor color : TeamColor.values()) {
+                                                builder.suggest(color.getSerializedName());
+                                            }
+                                            return builder.buildFuture();
+                                        })
+                                        .executes(context -> {
+                                            ServerPlayer player = context.getSource().getPlayerOrException();
+                                            String color = StringArgumentType.getString(context, "color");
+                                            try {
+                                                datManager.get().executeSet(player, "color", color);
+                                            } catch (IOException ex) {
+                                                context.getSource().sendFailure(Component.literal("Could not save the team colour."));
+                                                return 0;
+                                            }
+                                            teamUtils.rebuildTeams(context.getSource().getServer());
+                                            context.getSource().sendSuccess(() -> Component.literal("Team tag colour updated to " + color), false);
+                                            return 1;
+                                        }))))
+
+
                         .then(Commands.literal("create")
                                 .then(Commands.argument("name", StringArgumentType.string())
                                         .then(Commands.argument("tag", StringArgumentType.string()).executes(context -> {
