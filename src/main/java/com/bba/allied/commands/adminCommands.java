@@ -40,8 +40,8 @@ public class adminCommands {
 
     public static void registerCommands() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
-                Commands.literal("alliedAdmin")
-                        .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))
+                Commands.literal("teamAdmin")
+                        .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
                         .then(Commands.literal("memberCap")
                                 .then(Commands.argument("value", IntegerArgumentType.integer(1))
                                         .executes(context -> {

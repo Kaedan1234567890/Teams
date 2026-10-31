@@ -30,7 +30,7 @@ public class StorageContainer extends SimpleContainer {
         if (teamName == null) return false;
 
         CompoundTag team = dm.getTeamData(teamName);
-        return team.getBooleanOr("storageEnabled", false)
+        return team.getBooleanOr("storageEnabled", false) && team.getBooleanOr("storageOwnerEnabled", true)
                 && session.teamId.equals(team.getStringOr("id", ""));
     }
 }

@@ -68,14 +68,29 @@ public class teamCommands {
 
     public static void registerCommands() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-            dispatcher.register(Commands.literal("allied")
+            dispatcher.register(Commands.literal("team")
                     .requires(CommandSourceStack::isPlayer)
 
                     .then(Commands.literal("storage")
                             .executes(context -> {
                                 teamStorage.open(context.getSource().getPlayerOrException());
                                 return 1;
-                            }))
+                            })
+                            .then(Commands.literal("toggle")
+                                    .then(Commands.argument("enabled", BoolArgumentType.bool())
+                                            .executes(context -> {
+                                                ServerPlayer player = context.getSource().getPlayerOrException();
+                                                datManager dm = datManager.get();
+                                                String teamName = dm.requireOwnedTeam(player.getUUID());
+                                                CompoundTag team = dm.getTeamData(teamName);
+                                                boolean enabled = BoolArgumentType.getBool(context, "enabled");
+                                                team.putBoolean("storageOwnerEnabled", enabled);
+                                                try { dm.save(); } catch (IOException e) { throw saveFailed(e); }
+                                                context.getSource().sendSuccess(() -> Component.literal(
+                                                        "Team storage " + (enabled ? "enabled" : "disabled")
+                                                        + " for your team (server admin master switch still applies)."), false);
+                                                return 1;
+                                            }))))
 
                     .then(Commands.literal("mark")
                             .then(Commands.argument("name", StringArgumentType.string())
@@ -159,7 +174,7 @@ public class teamCommands {
                                         String targetName = dm.nameOf(server, target);
                                         Component confirm = Component.literal("[CONFIRM]").withStyle(style -> style
                                                 .withColor(ChatFormatting.RED)
-                                                .withClickEvent(new ClickEvent.RunCommand("/allied transfer " + targetName + " confirm"))
+                                                .withClickEvent(new ClickEvent.RunCommand("/team transfer " + targetName + " confirm"))
                                                 .withHoverEvent(new HoverEvent.ShowText(Component.literal("Give " + targetName + " ownership of " + teamName))));
 
                                         context.getSource().sendSuccess(() -> Component.literal("Transfer ownership of ")
@@ -189,8 +204,8 @@ public class teamCommands {
                                                 return 1;
                                             })))));
 
-            dispatcher.register(Commands.literal("alliedAdmin")
-                    .requires(Commands.hasPermission(Commands.LEVEL_ADMINS))
+            dispatcher.register(Commands.literal("teamAdmin")
+                    .requires(Commands.hasPermission(Commands.LEVEL_OWNERS))
 
                     .then(Commands.literal("storage")
                             .then(Commands.argument("teamName", StringArgumentType.string())

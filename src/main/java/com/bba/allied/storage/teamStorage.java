@@ -82,7 +82,7 @@ public final class teamStorage {
         String teamName = dm.requireTeam(player.getUUID());
         CompoundTag team = dm.getTeamData(teamName);
 
-        if (!team.getBooleanOr("storageEnabled", false)) {
+        if (!team.getBooleanOr("storageEnabled", false) || !team.getBooleanOr("storageOwnerEnabled", true)) {
             throw error("Team storage is disabled for your team. A server admin can enable it.");
         }
 

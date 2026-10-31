@@ -346,10 +346,10 @@ public class datManager {
     public static Component inviteMessage(String teamName) {
         Component accept = Component.literal("[ACCEPT]")
                 .withStyle(ChatFormatting.GREEN)
-                .withStyle(s -> s.withClickEvent(new ClickEvent.RunCommand("/allied invAccept " + quote(teamName))));
+                .withStyle(s -> s.withClickEvent(new ClickEvent.RunCommand("/team invAccept " + quote(teamName))));
         Component deny = Component.literal("[DENY]")
                 .withStyle(ChatFormatting.RED)
-                .withStyle(s -> s.withClickEvent(new ClickEvent.RunCommand("/allied invDeny " + quote(teamName))));
+                .withStyle(s -> s.withClickEvent(new ClickEvent.RunCommand("/team invDeny " + quote(teamName))));
 
         return Component.literal("You were invited to join team ")
                 .append(Component.literal(teamName).withStyle(ChatFormatting.YELLOW))
@@ -361,13 +361,13 @@ public class datManager {
         Component accept = Component.literal("[ACCEPT]")
                 .withStyle(ChatFormatting.GREEN)
                 .withStyle(style -> style
-                        .withClickEvent(new ClickEvent.RunCommand("/allied accept " + requesterUUID))
+                        .withClickEvent(new ClickEvent.RunCommand("/team accept " + requesterUUID))
                         .withHoverEvent(new HoverEvent.ShowText(Component.literal("Accept join request")))
                 );
         Component deny = Component.literal("[DENY]")
                 .withStyle(ChatFormatting.RED)
                 .withStyle(style -> style
-                        .withClickEvent(new ClickEvent.RunCommand("/allied deny " + requesterUUID))
+                        .withClickEvent(new ClickEvent.RunCommand("/team deny " + requesterUUID))
                         .withHoverEvent(new HoverEvent.ShowText(Component.literal("Deny join request")))
                 );
 
@@ -567,6 +567,7 @@ public class datManager {
 
         CompoundTag team = createTeam(teamTag, ownerUUID);
         team.putBoolean("storageEnabled", settings.getBooleanOr("storageDefault", false));
+        team.putBoolean("storageOwnerEnabled", true);
         teams.put(teamName, team);
 
         try {
@@ -884,14 +885,14 @@ public class datManager {
             Component enableButton = Component.literal("[ENABLE]")
                     .withStyle(style -> style
                             .withColor(ChatFormatting.GREEN)
-                            .withClickEvent(new ClickEvent.RunCommand("/allied settings" + " " + key + " " + true))
+                            .withClickEvent(new ClickEvent.RunCommand("/team settings" + " " + key + " " + true))
                             .withHoverEvent(new HoverEvent.ShowText(Component.literal("Enable " + key)))
                     );
 
             Component disableButton = Component.literal("[DISABLE]")
                     .withStyle(style -> style
                             .withColor(ChatFormatting.RED)
-                            .withClickEvent(new ClickEvent.RunCommand("/allied settings" + " " + key + " " + false))
+                            .withClickEvent(new ClickEvent.RunCommand("/team settings" + " " + key + " " + false))
                             .withHoverEvent(new HoverEvent.ShowText(Component.literal("Disable " + key)))
                     );
 
@@ -959,7 +960,7 @@ public class datManager {
                             .withColor(ChatFormatting.GREEN)
                             .withClickEvent(
                                     new ClickEvent.RunCommand(
-                                            "/alliedAdmin modifySettings " + quote(teamName) + " " + key + " true"
+                                            "/teamAdmin modifySettings " + quote(teamName) + " " + key + " true"
                                     )
                             )
                     );
@@ -969,7 +970,7 @@ public class datManager {
                             .withColor(ChatFormatting.RED)
                             .withClickEvent(
                                     new ClickEvent.RunCommand(
-                                            "/alliedAdmin modifySettings " + quote(teamName) + " " + key + " false"
+                                            "/teamAdmin modifySettings " + quote(teamName) + " " + key + " false"
                                     )
                             )
                     );
