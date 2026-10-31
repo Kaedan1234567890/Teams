@@ -259,9 +259,11 @@ public class teamUtils {
                     tagColor = ChatFormatting.WHITE;
                 }
 
+                final ChatFormatting finalTagColor = tagColor;
+
                 Component prefix = Component.literal("[")
                         .withStyle(ChatFormatting.WHITE)
-                        .append(Component.literal(tag).withStyle(style -> style.withColor(tagColor)
+                        .append(Component.literal(tag).withStyle(style -> style.withColor(finalTagColor)
                                 .withHoverEvent(new HoverEvent.ShowText(Component.literal("Team: " + internalTeamName)))))
                         .append(Component.literal("] ").withStyle(ChatFormatting.WHITE));
 

@@ -46,9 +46,11 @@ public abstract class ServerPlayerEntityMixin {
                     tagColor = ChatFormatting.WHITE;
                 }
 
+                final ChatFormatting finalTagColor = tagColor;
+
                 Component tabName = Component.literal("[")
                         .withStyle(ChatFormatting.WHITE)
-                        .append(Component.literal(tag).withStyle(style -> style.withColor(tagColor)
+                        .append(Component.literal(tag).withStyle(style -> style.withColor(finalTagColor)
                                 .withHoverEvent(new HoverEvent.ShowText(Component.literal("Team: " + teamName)))))
                         .append(Component.literal("] "))
                         .append(player.getName()).withStyle(ChatFormatting.WHITE);
