@@ -31,7 +31,7 @@ public class commands {
 
     public static void registerCommands() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
-                Commands.literal("team")
+                Commands.literal("teams")
                         .requires(CommandSourceStack::isPlayer)
 
                         .then(Commands.literal("create")
