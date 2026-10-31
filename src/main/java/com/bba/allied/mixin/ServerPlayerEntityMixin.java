@@ -4,6 +4,7 @@ import com.bba.allied.data.datManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -47,7 +48,8 @@ public abstract class ServerPlayerEntityMixin {
 
                 Component tabName = Component.literal("[")
                         .withStyle(ChatFormatting.WHITE)
-                        .append(Component.literal(tag).withStyle(tagColor))
+                        .append(Component.literal(tag).withStyle(style -> style.withColor(tagColor)
+                                .withHoverEvent(new HoverEvent.ShowText(Component.literal("Team: " + teamName)))))
                         .append(Component.literal("] "))
                         .append(player.getName()).withStyle(ChatFormatting.WHITE);
 

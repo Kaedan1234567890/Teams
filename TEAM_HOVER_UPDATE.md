@@ -1,0 +1,1 @@
+Teams 2.7 Alpha 6: show the full saved team name on hover over the coloured tag component in Placeholder API chat prefix, overhead scoreboard prefix and TAB display name. Team tag colour and username formatting remain separate. This is a source-only uncompiled experimental build. If a chat plugin flattens styled components to plain text, hover events may not survive in chat.

@@ -7,6 +7,7 @@ import eu.pb4.placeholders.api.ServerPlaceholderContext;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.resources.Identifier;
 
 import java.util.function.BiFunction;
@@ -27,7 +28,9 @@ public final class placeholderCompat {
         // %allied:team_prefix% - "[TAG] " in the team's colour, same as the tab list
         register("team_prefix", (teamName, team) -> Component.literal("[")
                 .withStyle(ChatFormatting.WHITE)
-                .append(Component.literal(team.getStringOr("teamTag", teamName).toUpperCase()).withStyle(tagColor(team)))
+                .append(Component.literal(team.getStringOr("teamTag", teamName).toUpperCase())
+                        .withStyle(style -> style.withColor(tagColor(team))
+                                .withHoverEvent(new HoverEvent.ShowText(Component.literal("Team: " + teamName)))))
                 .append(Component.literal("] ").withStyle(ChatFormatting.WHITE)));
 
         // %allied:team_members% - owner included

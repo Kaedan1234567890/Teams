@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerScoreboard;
@@ -260,7 +261,8 @@ public class teamUtils {
 
                 Component prefix = Component.literal("[")
                         .withStyle(ChatFormatting.WHITE)
-                        .append(Component.literal(tag).withStyle(tagColor))
+                        .append(Component.literal(tag).withStyle(style -> style.withColor(tagColor)
+                                .withHoverEvent(new HoverEvent.ShowText(Component.literal("Team: " + internalTeamName)))))
                         .append(Component.literal("] ").withStyle(ChatFormatting.WHITE));
 
                 ServerScoreboard scoreboard = server.getScoreboard();
