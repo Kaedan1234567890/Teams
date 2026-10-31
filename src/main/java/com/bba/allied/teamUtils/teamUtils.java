@@ -272,7 +272,8 @@ public class teamUtils {
 
                 team.setPlayerPrefix(prefix);
                 team.setPlayerSuffix(Component.empty());
-                team.setColor(Optional.of(TeamColor.WHITE));
+                // Keep the scoreboard team neutral; the tag prefix itself has its own colour.
+                team.setColor(Optional.empty());
                 scoreboard.addPlayerToTeam(player.getScoreboardName(), team);
                 return;
             }
